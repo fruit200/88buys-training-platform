@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>88buys - 阿里系供应链直签服务商精英培训会</title>
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}</script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+:root{--teal-50:#F0FDFA;--teal-100:#CCFBF1;--teal-200:#99F6E4;--teal-300:#5EEAD4;--teal-400:#2DD4BF;--teal-500:#14B8A6;--teal-600:#0D9488;--teal-700:#0F766E;--teal-800:#115E59;--teal-900:#134E4A;--cyan-50:#ECFEFF;--cyan-100:#CFFAFE;--cyan-200:#A5F3FC;--cyan-400:#22D3EE;--cyan-500:#06B6D4;--cyan-600:#0891B2;--cyan-700:#0E7490;--emerald-50:#ECFDF5;--emerald-200:#A7F3D0;--emerald-500:#10B981;--emerald-600:#059669;--emerald-800:#065F46;--primary:var(--teal-600);--primary-hover:var(--teal-700);--primary-dark:var(--teal-800);--accent:var(--cyan-500);--bg:#F1F5F9;--white:#FFFFFF;--surface:#FFFFFF;--text:#0F172A;--text-secondary:#475569;--text-tertiary:#94A3B8;--text-light:#CBD5E1;--border:#E2E8F0;--border-light:#F1F5F9;--border-focus:var(--teal-300);--success:var(--emerald-500);--success-bg:var(--emerald-50);--success-dark:var(--emerald-800);--danger:#EF4444;--danger-bg:#FEF2F2;--shadow-xs:0 1px 2px 0 rgba(0,0,0,0.03);--shadow-sm:0 1px 3px 0 rgba(0,0,0,0.06),0 1px 2px -1px rgba(0,0,0,0.04);--shadow:0 1px 3px 0 rgba(0,0,0,0.08),0 1px 2px -1px rgba(0,0,0,0.06);--shadow-md:0 4px 6px -1px rgba(0,0,0,0.07),0 2px 4px -2px rgba(0,0,0,0.05);--shadow-lg:0 10px 15px -3px rgba(0,0,0,0.07),0 4px 6px -4px rgba(0,0,0,0.05);--shadow-xl:0 20px 25px -5px rgba(0,0,0,0.08),0 8px 10px -6px rgba(0,0,0,0.04);--radius:10px;--radius-sm:6px;--radius-md:8px;--radius-lg:14px;--radius-xl:20px;--radius-full:9999px;--font-sans:'Noto Sans SC','PingFang SC',-apple-system,BlinkMacSystemFont,'Microsoft YaHei','Segoe UI','Helvetica Neue',Arial,sans-serif;--transition:0.2s cubic-bezier(0.4,0,0.2,1);--transition-slow:0.35s cubic-bezier(0.4,0,0.2,1);--nav-height:56px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);color:var(--text);background:var(--bg);line-height:1.6;min-height:100vh;letter-spacing:-0.011em}
+a{color:var(--primary);text-decoration:none;transition:color var(--transition)}
+a:hover{color:var(--primary-hover)}
+img{max-width:100%;height:auto}
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+.main-content{min-height:calc(100vh - var(--nav-height) - 50px);padding:28px 0}
+
+/* Navbar */
+.navbar{background:rgba(255,255,255,0.88);border-bottom:1px solid rgba(13,148,136,0.08);position:sticky;top:0;z-index:100;height:var(--nav-height);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.nav-container{display:flex;align-items:center;justify-content:space-between;height:var(--nav-height);max-width:1120px;margin:0 auto;padding:0 24px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;color:var(--primary-dark)}
+.brand-logo-img{height:36px;width:auto;object-fit:contain;flex-shrink:0}
+.brand-text{font-size:0.92rem;font-weight:600}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;border-radius:var(--radius-sm)}
+.nav-toggle span{width:20px;height:2px;background:var(--text-secondary);border-radius:2px}
+.nav-menu{display:flex;align-items:center;gap:2px}
+.nav-link{padding:7px 14px;border-radius:var(--radius-sm);font-size:0.875rem;font-weight:500;color:var(--text-secondary);transition:all var(--transition);cursor:pointer}
+.nav-link:hover{background:var(--teal-50);color:var(--teal-600)}
+.nav-link.active{background:var(--teal-50);color:var(--teal-600);font-weight:600}
+
+/* Hero */
+.hero-banner{background:linear-gradient(135deg,var(--teal-800) 0%,var(--teal-700) 30%,var(--teal-600) 60%,var(--cyan-600) 100%);border-radius:var(--radius-lg);padding:24px 32px;margin-bottom:24px;color:var(--white);position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(13,148,136,0.2),inset 0 1px 0 rgba(255,255,255,0.1)}
+.hero-banner::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.05);top:-100px;right:-50px}
+.hero-banner::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.03);bottom:-80px;left:30%}
+.hero-content{position:relative;z-index:1}
+.hero-content h1{font-size:1.2rem;margin-bottom:4px;font-weight:700}
+.hero-content p{opacity:0.8;font-size:0.875rem}
+.hero-stats{position:relative;z-index:1;display:flex;gap:20px;margin-top:16px}
+.hero-stat{display:flex;flex-direction:column;align-items:center}
+.hero-stat-value{font-size:1.5rem;font-weight:800;line-height:1.2}
+.hero-stat-label{font-size:0.75rem;opacity:0.7;margin-top:2px}
+
+/* Filter */
+.filter-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding:16px 20px;background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.search-form{display:flex;gap:8px;flex:1;min-width:220px}
+.search-input-wrap{flex:1;position:relative}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.9rem;color:var(--text-tertiary)}
+.search-input{width:100%;padding:9px 36px 9px 36px;border:1px solid var(--border);border-radius:var(--radius-md);font-size:0.875rem;font-family:var(--font-sans);transition:all var(--transition)}
+.search-input:focus{outline:none;border-color:var(--teal-400);box-shadow:0 0 0 3px rgba(13,148,136,0.1)}
+.filter-tags{display:flex;gap:6px}
+.filter-tag{padding:6px 14px;border-radius:var(--radius-full);font-size:0.8rem;font-weight:500;color:var(--text-secondary);background:var(--bg);transition:all var(--transition);border:1px solid transparent;cursor:pointer}
+.filter-tag:hover{background:var(--teal-50);color:var(--teal-600);border-color:var(--teal-200)}
+.filter-tag.active{background:linear-gradient(135deg,var(--teal-600),var(--teal-500));color:var(--white);border-color:var(--teal-600);box-shadow:0 2px 10px rgba(13,148,136,0.25)}
+
+/* Period Cards */
+.periods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-bottom:40px}
+.period-card{display:flex;flex-direction:column;background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;transition:all 0.3s;color:var(--text);box-shadow:var(--shadow-sm);cursor:pointer;position:relative}
+.period-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal-500),var(--cyan-400));opacity:0;transition:opacity 0.3s;z-index:1}
+.period-card:hover::before{opacity:1}
+.period-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -12px rgba(13,148,136,0.15);border-color:var(--teal-200)}
+.period-cover{height:160px;overflow:hidden;background:linear-gradient(135deg,var(--teal-50) 0%,var(--teal-100) 50%,var(--cyan-100) 100%)}
+.period-cover-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px}
+.cover-icon{font-size:2.8rem}
+.cover-label{font-size:0.82rem;font-weight:700;color:var(--teal-700);background:rgba(255,255,255,0.85);padding:3px 12px;border-radius:var(--radius-full)}
+.period-info{padding:18px 20px;flex:1;display:flex;flex-direction:column}
+.period-title{font-size:1rem;font-weight:700;margin-bottom:6px;line-height:1.4}
+.period-desc{font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;flex:1;line-height:1.6}
+.period-meta{display:flex;gap:6px;flex-wrap:wrap}
+.meta-badge{padding:3px 10px;background:var(--teal-50);color:var(--teal-700);border-radius:var(--radius-full);font-size:0.75rem;font-weight:600;border:1px solid var(--teal-100)}
+.meta-green{background:var(--success-bg);color:var(--success-dark);border-color:var(--emerald-200)}
+.meta-orange{background:#FFF7ED;color:#C2410C;border-color:#FED7AA}
+
+/* Breadcrumb */
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.84rem;color:var(--text-secondary);margin-bottom:20px}
+.breadcrumb a{color:var(--text-secondary);font-weight:500;cursor:pointer}
+.breadcrumb a:hover{color:var(--teal-600)}
+.breadcrumb .sep{color:var(--text-light)}
+
+/* Day Nav */
+.day-nav{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:12px 20px;background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.day-nav-label{font-size:0.84rem;font-weight:700;color:var(--text);margin-right:6px}
+.day-btn{padding:7px 20px;border-radius:var(--radius-full);font-size:0.84rem;font-weight:600;color:var(--text-secondary);background:var(--bg);border:1px solid transparent;cursor:pointer;transition:all var(--transition);font-family:var(--font-sans)}
+.day-btn:hover{background:var(--teal-50);color:var(--teal-600);border-color:var(--teal-200)}
+.day-btn.active{background:linear-gradient(135deg,var(--teal-600),var(--teal-500));color:var(--white);border-color:var(--teal-600);box-shadow:0 2px 10px rgba(13,148,136,0.3)}
+
+/* Section Tabs */
+.section-tabs{display:flex;gap:4px;margin-bottom:20px;padding:5px;background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.section-tab{flex:1;padding:10px 16px;border-radius:var(--radius-md);font-size:0.875rem;font-weight:600;color:var(--text-secondary);background:transparent;border:none;cursor:pointer;transition:all var(--transition);text-align:center;font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;gap:6px}
+.section-tab:hover{background:var(--bg);color:var(--text)}
+.section-tab.active{background:linear-gradient(135deg,var(--teal-600),var(--teal-500));color:var(--white);box-shadow:0 2px 10px rgba(13,148,136,0.3)}
+.tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--radius-full);font-size:0.7rem;font-weight:700;background:rgba(255,255,255,0.25)}
+.section-tab:not(.active) .tab-count{background:var(--border-light);color:var(--text-tertiary)}
+
+/* Detail Layout */
+.detail-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+.material-list-panel{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:20px;max-height:72vh;overflow-y:auto;box-shadow:var(--shadow-sm)}
+.material-list-panel::-webkit-scrollbar{width:4px}
+.material-list-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.panel-title{font-size:1rem;font-weight:700;margin-bottom:6px}
+.panel-desc{font-size:0.82rem;color:var(--text-secondary);margin-bottom:16px;line-height:1.6}
+.material-list{display:flex;flex-direction:column;gap:4px}
+.material-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:var(--radius-md);color:var(--text);font-size:0.85rem;transition:all var(--transition);border:1.5px solid transparent;cursor:pointer}
+.material-item:hover{background:#F7FEFD;border-color:var(--border)}
+.material-item.active{background:linear-gradient(135deg,var(--teal-50),rgba(6,182,212,0.04));border-color:var(--teal-300);color:var(--teal-800);box-shadow:0 2px 8px rgba(13,148,136,0.1)}
+.material-icon{flex-shrink:0;width:32px;height:32px;background:var(--bg);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.95rem;margin-top:1px}
+.material-item.active .material-icon{background:var(--teal-100)}
+.material-info{flex:1;min-width:0}
+.material-name{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px;font-size:0.86rem}
+.material-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:0.76rem;color:var(--text-tertiary);line-height:1.5}
+.material-views{font-size:0.72rem;color:var(--text-tertiary);white-space:nowrap;flex-shrink:0;margin-top:4px}
+.material-group-tag{display:inline-block;padding:1px 8px;background:var(--cyan-50);color:var(--cyan-700);border-radius:var(--radius-full);font-size:0.7rem;font-weight:600;margin-top:3px;border:1px solid var(--cyan-100)}
+
+/* Viewer */
+.viewer-panel{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:24px;min-height:420px;box-shadow:var(--shadow-sm)}
+.viewer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.viewer-title{font-size:1.1rem;font-weight:700}
+.viewer-desc{font-size:0.875rem;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;padding-bottom:16px;border-bottom:1px solid var(--border-light)}
+.viewer-badge{padding:4px 12px;border-radius:var(--radius-full);font-size:0.75rem;font-weight:600}
+.badge-video{background:var(--success-bg);color:var(--success-dark);border:1px solid var(--emerald-200)}
+.badge-pdf{background:#FFF7ED;color:#C2410C;border:1px solid #FED7AA}
+.video-wrapper{position:relative;width:100%;background:#0F172A;border-radius:var(--radius-md);overflow:hidden;margin-bottom:12px;box-shadow:0 8px 25px -5px rgba(0,0,0,0.2)}
+.video-wrapper video{width:100%;display:block;max-height:500px}
+.video-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:4px 0}
+.speed-control{display:flex;align-items:center;gap:8px;font-size:0.84rem;color:var(--text-secondary);font-weight:500}
+.speed-select{padding:4px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;font-family:var(--font-sans)}
+.image-viewer{text-align:center}
+.image-viewer img{max-width:100%;max-height:520px;border-radius:var(--radius-md);box-shadow:var(--shadow-md)}
+.image-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;background:var(--bg);border-radius:var(--radius-md);color:var(--text-tertiary);gap:10px;border:2px dashed var(--border)}
+.empty-viewer{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;color:var(--text-tertiary);gap:12px}
+.empty-viewer .empty-icon{font-size:3rem;opacity:0.5}
+.empty-state-sm{text-align:center;padding:28px 16px;color:var(--text-tertiary);font-size:0.85rem}
+
+/* PDF */
+.pdf-wrapper{position:relative;text-align:center}
+.pdf-canvas{max-width:100%;border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+.pdf-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px}
+.pdf-page-info{font-size:0.84rem;color:var(--text-secondary);font-weight:600}
+.pdf-loading{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.92);gap:12px;border-radius:var(--radius-md)}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--teal-600);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Photo Wall */
+.photo-wall-panel{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:24px;box-shadow:var(--shadow-sm)}
+.photo-wall-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.photo-wall-count{font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.photo-grid-item{aspect-ratio:1;border-radius:var(--radius-md);overflow:hidden;cursor:pointer;transition:all 0.3s;background:var(--bg);border:1px solid var(--border);position:relative}
+.photo-grid-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.3) 0%,transparent 50%);opacity:0;transition:opacity 0.3s;border-radius:var(--radius-md)}
+.photo-grid-item:hover::after{opacity:1}
+.photo-grid-item:hover{transform:scale(1.04);box-shadow:0 12px 24px -8px rgba(13,148,136,0.2);border-color:var(--teal-300)}
+.photo-grid-item img{width:100%;height:100%;object-fit:cover}
+
+/* Photo Modal */
+.photo-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:40px}
+.photo-modal.open{display:flex}
+.photo-modal-content{position:relative;max-width:90vw;max-height:90vh;text-align:center}
+.photo-modal-content img{max-width:90vw;max-height:80vh;border-radius:var(--radius-lg);box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain}
+.photo-modal-close{position:absolute;top:-16px;right:-16px;width:40px;height:40px;background:var(--white);border:none;border-radius:50%;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:1;transition:transform var(--transition)}
+.photo-modal-close:hover{transform:scale(1.1)}
+.photo-modal-title{margin-top:16px;color:var(--white);font-size:0.95rem;font-weight:500}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 20px;border:none;border-radius:var(--radius-md);font-size:0.875rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;transition:all var(--transition);white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--teal-600) 0%,var(--teal-500) 100%);color:var(--white);box-shadow:0 2px 4px rgba(13,148,136,0.25)}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(13,148,136,0.35);transform:translateY(-1px)}
+.btn-outline{background:var(--white);color:var(--text-secondary);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--teal-200);color:var(--teal-600);background:var(--teal-50)}
+.btn-sm{padding:5px 12px;font-size:0.8rem;border-radius:var(--radius-sm)}
+
+/* Footer */
+.footer{text-align:center;padding:20px;color:var(--text-tertiary);font-size:0.75rem;border-top:1px solid var(--border);background:linear-gradient(180deg,var(--white) 0%,#F8FEFD 100%)}
+
+/* Responsive */
+@media(max-width:900px){.detail-layout{grid-template-columns:1fr}.material-list-panel{max-height:none}}
+@media(max-width:768px){:root{--nav-height:52px}.nav-toggle{display:flex}.nav-menu{display:none;position:absolute;top:var(--nav-height);left:0;right:0;background:var(--white);box-shadow:var(--shadow-lg);flex-direction:column;padding:12px;z-index:150;border-bottom:1px solid var(--border)}.nav-menu.open{display:flex}.brand-text{font-size:0.8rem}.hero-banner{padding:20px 18px}.hero-content h1{font-size:1.05rem}.periods-grid{grid-template-columns:1fr}.filter-bar{flex-direction:column;align-items:stretch}.section-tabs{overflow-x:auto}.section-tab{white-space:nowrap;font-size:0.8rem;padding:8px 12px}}
+@media(max-width:480px){.viewer-panel{padding:16px}.container{padding:0 16px}}
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a class="nav-brand" onclick="navigateTo('home')" style="cursor:pointer">
+            <img src="static/images/logo.png" alt="88buys" class="brand-logo-img">
+            <span class="brand-text">阿里系供应链直签服务商精英培训会</span>
+        </a>
+        <button class="nav-toggle" onclick="document.querySelector('.nav-menu').classList.toggle('open')">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu">
+            <a class="nav-link active" id="nav-home" onclick="navigateTo('home')">首页</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<div class="main-content" id="app"></div>
+
+<!-- Photo Modal -->
+<div class="photo-modal" id="photoModal" onclick="closePhotoModal(event)">
+    <div class="photo-modal-content">
+        <button class="photo-modal-close" onclick="closePhotoModal(event)">&times;</button>
+        <img id="photoModalImg" src="" alt="">
+        <p class="photo-modal-title" id="photoModalTitle"></p>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">&copy; 2026 88buys 采发发 &middot; 阿里系供应链直签服务商精英培训会</footer>
+
+<script>
+// ============================================================
+// DATA - 培训数据（静态嵌入）
+// ============================================================
+const SITE_DATA = {
+    periods: [
+        {
+            id: 1,
+            title: "第1期 - 供应链数字化转型实战",
+            description: "本期培训聚焦供应链数字化转型的核心方法论，涵盖从传统供应链到智慧供应链的升级路径、数字化采购与物流协同、以及 AI 驱动的库存优化策略。为期2天的集中培训。",
+            total_days: 2,
+            sort_order: 1,
+            materials: [
+                // Day 1 - 课件
+                {id:1, day:1, section:"courseware", type:"video", title:"供应链数字化概述与趋势分析", description:"本课程从宏观视角解读供应链数字化转型的时代背景，深入分析全球供应链格局变化。", file_url:"https://www.w3schools.com/html/mov_bbb.mp4", group_name:""},
+                {id:2, day:1, section:"courseware", type:"video", title:"AI 驱动的智慧库存管理实操", description:"聚焦库存管理的数字化升级实战，讲解如何利用 AI 算法实现需求预测和智能补货。", file_url:"https://www.w3schools.com/html/movie.mp4", group_name:""},
+                // Day 1 - 照片
+                {id:3, day:1, section:"photo", type:"image", title:"开班合影", description:"第1天开班仪式全体合影", file_url:"https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80", group_name:""},
+                {id:4, day:1, section:"photo", type:"image", title:"小组讨论", description:"学员们热烈讨论中", file_url:"https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80", group_name:""},
+                {id:5, day:1, section:"photo", type:"image", title:"课堂互动", description:"讲师与学员互动环节", file_url:"https://images.unsplash.com/photo-1524178232363-1fb2b075b637?w=800&q=80", group_name:""},
+                {id:6, day:1, section:"photo", type:"image", title:"茶歇交流", description:"课间茶歇时的交流", file_url:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80", group_name:""},
+                // Day 1 - 作业
+                {id:7, day:1, section:"homework", type:"pdf", title:"第一天课后作业 - 供应链诊断报告", description:"请根据今天所学内容，完成一份企业供应链现状诊断报告。", file_url:"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf", group_name:""},
+                // Day 2 - 课件
+                {id:8, day:2, section:"courseware", type:"pdf", title:"数字化供应链管理白皮书（2024版）", description:"行业专家编写的供应链管理数字化白皮书，涵盖转型路径规划和技术选型建议。", file_url:"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf", group_name:""},
+                // Day 2 - 照片
+                {id:9, day:2, section:"photo", type:"image", title:"第二天开班", description:"第二天培训开始", file_url:"https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80", group_name:""},
+                {id:10, day:2, section:"photo", type:"image", title:"结业合影", description:"培训结业全体合影", file_url:"https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&q=80", group_name:""},
+                // Day 2 - 小组风采
+                {id:11, day:2, section:"team_showcase", type:"image", title:"第一组 - 数字化方案展示", description:"第一组在结业汇报中展示的企业数字化供应链转型方案。", file_url:"https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", group_name:"第一组"},
+                {id:12, day:2, section:"team_showcase", type:"image", title:"第二组 - 智慧仓储项目路演", description:"第二组展示的智慧仓储数字化升级项目方案与落地计划。", file_url:"https://images.unsplash.com/photo-1531436259699-0c60b16e160a?w=800&q=80", group_name:"第二组"}
+            ]
+        }
+    ]
+};
+
+// ============================================================
+// ROUTER
+// ============================================================
+let currentView = 'home';
+let currentPeriodId = null;
+let currentDay = 1;
+let currentSection = 'courseware';
+let currentMaterialId = null;
+let searchQuery = '';
+let typeFilter = '';
+
+function navigateTo(view, params) {
+    params = params || {};
+    currentView = view;
+    if (params.periodId !== undefined) currentPeriodId = params.periodId;
+    if (params.day !== undefined) currentDay = params.day;
+    if (params.section !== undefined) currentSection = params.section;
+    if (params.materialId !== undefined) currentMaterialId = params.materialId;
+    if (params.search !== undefined) searchQuery = params.search;
+    if (params.typeFilter !== undefined) typeFilter = params.typeFilter;
+    render();
+    window.scrollTo(0, 0);
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+    const app = document.getElementById('app');
+    if (currentView === 'home') {
+        app.innerHTML = renderHome();
+    } else if (currentView === 'detail') {
+        app.innerHTML = renderDetail();
+        afterDetailRender();
+    }
+}
+
+// ============================================================
+// HOME VIEW
+// ============================================================
+function renderHome() {
+    const periods = SITE_DATA.periods;
+    let totalMaterials = 0, totalPhotos = 0;
+    const periodData = periods.map(p => {
+        const courseware = p.materials.filter(m => m.section === 'courseware').length;
+        const photos = p.materials.filter(m => m.section === 'photo').length;
+        const homework = p.materials.filter(m => m.section === 'homework').length;
+        const showcase = p.materials.filter(m => m.section === 'team_showcase').length;
+        totalMaterials += courseware;
+        totalPhotos += photos;
+        return {period: p, courseware, photos, homework, showcase};
+    });
+
+    // Filter
+    let filtered = periodData;
+    if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(pd =>
+            pd.period.title.toLowerCase().includes(q) ||
+            pd.period.materials.some(m => m.title.toLowerCase().includes(q))
+        );
+    }
+
+    let cardsHtml = filtered.map(pd => {
+        const p = pd.period;
+        let matBadges = `<span class="meta-badge">\u{1F4C5} ${p.total_days}天</span>`;
+        matBadges += `<span class="meta-badge">\u{1F4C1} ${pd.courseware} 份课件</span>`;
+        if (pd.photos > 0) matBadges += `<span class="meta-badge">\u{1F4F7} ${pd.photos}</span>`;
+        if (pd.homework > 0) matBadges += `<span class="meta-badge meta-orange">\u{1F4DD} ${pd.homework}</span>`;
+        if (pd.showcase > 0) matBadges += `<span class="meta-badge meta-green">\u{1F3C6} ${pd.showcase}</span>`;
+
+        const desc = p.description.length > 80 ? p.description.slice(0, 80) + '...' : p.description;
+        return `<div class="period-card" onclick="navigateTo('detail',{periodId:${p.id},day:1,section:'courseware',materialId:null})">
+            <div class="period-cover"><div class="period-cover-placeholder"><span class="cover-icon">\u{1F4D6}</span><span class="cover-label">第${p.sort_order}期</span></div></div>
+            <div class="period-info">
+                <h3 class="period-title">${p.title}</h3>
+                <p class="period-desc">${desc}</p>
+                <div class="period-meta">${matBadges}</div>
+            </div>
+        </div>`;
+    }).join('');
+
+    if (filtered.length === 0) {
+        cardsHtml = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-tertiary)"><div style="font-size:3rem;margin-bottom:12px;opacity:0.6">\u{1F4ED}</div><p>暂无匹配的培训资料</p></div>`;
+    }
+
+    return `<div class="container">
+        <section class="hero-banner">
+            <div class="hero-content"><h1>欢迎来到培训平台</h1><p>探索培训课程，提升供应链专业能力</p></div>
+            <div class="hero-stats">
+                <div class="hero-stat"><span class="hero-stat-value">${periods.length}</span><span class="hero-stat-label">培训期数</span></div>
+                <div class="hero-stat"><span class="hero-stat-value">${totalMaterials}</span><span class="hero-stat-label">课件总数</span></div>
+                <div class="hero-stat"><span class="hero-stat-value">${totalPhotos}</span><span class="hero-stat-label">活动照片</span></div>
+            </div>
+        </section>
+        <section class="filter-bar">
+            <div class="search-form">
+                <div class="search-input-wrap">
+                    <span class="search-icon">\u{1F50D}</span>
+                    <input type="text" class="search-input" placeholder="搜索期数或课程名称..." value="${searchQuery}" onkeydown="if(event.key==='Enter'){navigateTo('home',{search:this.value})}">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigateTo('home',{search:document.querySelector('.search-input').value})">搜索</button>
+            </div>
+            <div class="filter-tags">
+                <span class="filter-tag ${!typeFilter?'active':''}" onclick="navigateTo('home',{typeFilter:''})">全部</span>
+                <span class="filter-tag ${typeFilter==='video'?'active':''}" onclick="navigateTo('home',{typeFilter:'video'})">视频</span>
+                <span class="filter-tag ${typeFilter==='pdf'?'active':''}" onclick="navigateTo('home',{typeFilter:'pdf'})">PDF</span>
+            </div>
+        </section>
+        <section class="periods-grid">${cardsHtml}</section>
+    </div>`;
+}
+
+// ============================================================
+// DETAIL VIEW
+// ============================================================
+function renderDetail() {
+    const period = SITE_DATA.periods.find(p => p.id === currentPeriodId);
+    if (!period) return '<div class="container"><p>未找到该培训期数</p></div>';
+
+    // Day nav
+    let dayNavHtml = '';
+    if (period.total_days > 1) {
+        const btns = [];
+        for (let d = 1; d <= period.total_days; d++) {
+            btns.push(`<span class="day-btn ${d===currentDay?'active':''}" onclick="navigateTo('detail',{periodId:${period.id},day:${d},section:'${currentSection}',materialId:null})">第${d}天</span>`);
+        }
+        dayNavHtml = `<div class="day-nav"><span class="day-nav-label">培训日程：</span>${btns.join('')}</div>`;
+    }
+
+    // Section tabs
+    const sections = ['courseware','photo','homework','team_showcase'];
+    const sectionLabels = {courseware:'\u{1F4DA} 培训课件', photo:'\u{1F4F7} 照片墙', homework:'\u{1F4DD} 作业存档', team_showcase:'\u{1F3C6} 小组风采'};
+    const sectionDescs = {courseware:'培训课件与学习资料', photo:'培训活动照片', homework:'学员作业存档', team_showcase:'小组展示与风采'};
+
+    let tabsHtml = sections.map(sec => {
+        const count = period.materials.filter(m => m.day === currentDay && m.section === sec).length;
+        const countBadge = count > 0 ? `<span class="tab-count">${count}</span>` : '';
+        return `<span class="section-tab ${currentSection===sec?'active':''}" onclick="navigateTo('detail',{periodId:${period.id},day:${currentDay},section:'${sec}',materialId:null})">${sectionLabels[sec]} ${countBadge}</span>`;
+    }).join('');
+
+    // Materials for current day+section
+    const materials = period.materials.filter(m => m.day === currentDay && m.section === currentSection);
+
+    // Auto-select first material if none selected
+    if (!currentMaterialId && materials.length > 0) {
+        currentMaterialId = materials[0].id;
+    }
+    const active = materials.find(m => m.id === currentMaterialId);
+
+    // Photo wall mode
+    if (currentSection === 'photo' && materials.length > 0) {
+        const gridItems = materials.map(m => {
+            const src = m.file_url || '';
+            return `<div class="photo-grid-item" onclick="openPhotoModal(this)" data-title="${m.title}"><img src="${src}" alt="${m.title}" loading="lazy"></div>`;
+        }).join('');
+        return `<div class="container">
+            <div class="breadcrumb"><a onclick="navigateTo('home')">首页</a><span class="sep">/</span><span>${period.title}</span></div>
+            ${dayNavHtml}
+            <div class="section-tabs">${tabsHtml}</div>
+            <div class="photo-wall-panel">
+                <div class="photo-wall-header"><h2 class="panel-title">${period.title} - 第${currentDay}天 照片墙</h2><span class="photo-wall-count">\u{1F4F7} 共 ${materials.length} 张照片</span></div>
+                <div class="photo-grid">${gridItems}</div>
+            </div>
+        </div>`;
+    }
+
+    // List + Viewer mode
+    const listItems = materials.map(m => {
+        const icon = m.type === 'video' ? '\u{1F3AC}' : m.type === 'pdf' ? '\u{1F4C4}' : '\u{1F4F7}';
+        const isActive = active && active.id === m.id;
+        const descHtml = m.description ? `<span class="material-desc">${m.description}</span>` : '';
+        const groupHtml = m.group_name ? `<span class="material-group-tag">${m.group_name}</span>` : '';
+        return `<div class="material-item ${isActive?'active':''}" onclick="navigateTo('detail',{periodId:${period.id},day:${currentDay},section:'${currentSection}',materialId:${m.id}})"><span class="material-icon">${icon}</span><span class="material-info"><span class="material-name">${m.title}</span>${descHtml}${groupHtml}</span></div>`;
+    }).join('');
+
+    let viewerHtml = '';
+    if (active) {
+        const badgeClass = active.type === 'video' ? 'badge-video' : 'badge-pdf';
+        const badgeLabel = active.type === 'video' ? '\u{1F3AC} 视频' : '\u{1F4C4} PDF';
+        const descHtml = active.description ? `<p class="viewer-desc">${active.description}</p>` : '';
+        const groupHtml = active.group_name ? `<p style="margin-bottom:12px;font-size:0.85rem"><span class="material-group-tag">${active.group_name}</span></p>` : '';
+
+        let mediaHtml = '';
+        if (active.type === 'video') {
+            mediaHtml = `<div class="video-wrapper"><video id="videoPlayer" controls preload="metadata" playsinline><source src="${active.file_url}" type="video/mp4">您的浏览器不支持 HTML5 视频播放</video></div>
+            <div class="video-controls"><div class="speed-control"><label>播放速度：</label><select id="playbackSpeed" class="speed-select" onchange="document.getElementById('videoPlayer').playbackRate=parseFloat(this.value)"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select></div></div>`;
+        } else if (active.type === 'pdf') {
+            mediaHtml = `<div class="pdf-wrapper"><canvas id="pdfCanvas" class="pdf-canvas"></canvas><div class="pdf-controls"><button id="pdfPrev" class="btn btn-sm btn-outline" disabled onclick="pdfPrevPage()">\u25C0 上一页</button><span id="pdfPageInfo" class="pdf-page-info">第 1 页</span><button id="pdfNext" class="btn btn-sm btn-outline" onclick="pdfNextPage()">下一页 \u25B6</button></div><div id="pdfLoading" class="pdf-loading"><div class="spinner"></div><p>正在加载 PDF...</p></div></div>`;
+        }
+
+        viewerHtml = `<div class="viewer-header"><h3 class="viewer-title">${active.title}</h3><span class="viewer-badge ${badgeClass}">${badgeLabel}</span></div>${descHtml}${groupHtml}${mediaHtml}`;
+    } else {
+        const emptyMsg = materials.length === 0 ? '暂无资料' : '请从左侧选择资料查看';
+        viewerHtml = `<div class="empty-viewer"><div class="empty-icon">\u25B6\uFE0F</div><p>${emptyMsg}</p></div>`;
+    }
+
+    const emptyList = materials.length === 0 ? `<div class="empty-state-sm">暂无资料</div>` : '';
+
+    return `<div class="container">
+        <div class="breadcrumb"><a onclick="navigateTo('home')">首页</a><span class="sep">/</span><span>${period.title}</span></div>
+        ${dayNavHtml}
+        <div class="section-tabs">${tabsHtml}</div>
+        <div class="detail-layout">
+            <aside class="material-list-panel">
+                <h2 class="panel-title">${period.title} - 第${currentDay}天</h2>
+                <p class="panel-desc">${sectionDescs[currentSection]}</p>
+                <div class="material-list">${listItems || emptyList}</div>
+            </aside>
+            <section class="viewer-panel">${viewerHtml}</section>
+        </div>
+    </div>`;
+}
+
+// ============================================================
+// POST-RENDER LOGIC (PDF.js, etc.)
+// ============================================================
+let pdfDoc = null, pdfPage = 1, pdfTotal = 0;
+
+function afterDetailRender() {
+    const period = SITE_DATA.periods.find(p => p.id === currentPeriodId);
+    if (!period) return;
+    const materials = period.materials.filter(m => m.day === currentDay && m.section === currentSection);
+    const active = materials.find(m => m.id === currentMaterialId);
+
+    if (active && active.type === 'pdf' && typeof pdfjsLib !== 'undefined') {
+        loadPdf(active.file_url);
+    }
+}
+
+function loadPdf(url) {
+    pdfDoc = null; pdfPage = 1; pdfTotal = 0;
+    const canvas = document.getElementById('pdfCanvas');
+    const loadingEl = document.getElementById('pdfLoading');
+    if (!canvas || !loadingEl) return;
+
+    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+        pdfDoc = pdf;
+        pdfTotal = pdf.numPages;
+        loadingEl.style.display = 'none';
+        renderPdfPage(1);
+    }).catch(function() {
+        loadingEl.innerHTML = '<p>PDF 加载失败，请刷新重试</p>';
+    });
+}
+
+function renderPdfPage(num) {
+    if (!pdfDoc) return;
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+    pdfDoc.getPage(num).then(function(page) {
+        const container = canvas.parentElement;
+        const scale = Math.min(container.clientWidth / 612, 2);
+        const viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        page.render({canvasContext: ctx, viewport: viewport});
+        document.getElementById('pdfPageInfo').textContent = '第 ' + num + ' / ' + pdfTotal + ' 页';
+        document.getElementById('pdfPrev').disabled = num <= 1;
+        document.getElementById('pdfNext').disabled = num >= pdfTotal;
+    });
+}
+
+function pdfPrevPage() { if (pdfPage > 1) { pdfPage--; renderPdfPage(pdfPage); } }
+function pdfNextPage() { if (pdfPage < pdfTotal) { pdfPage++; renderPdfPage(pdfPage); } }
+
+// ============================================================
+// PHOTO MODAL
+// ============================================================
+function openPhotoModal(el) {
+    const img = el.querySelector('img');
+    if (!img) return;
+    document.getElementById('photoModalImg').src = img.src;
+    document.getElementById('photoModalTitle').textContent = el.getAttribute('data-title') || '';
+    document.getElementById('photoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closePhotoModal(e) {
+    if (e) e.stopPropagation();
+    const modal = document.getElementById('photoModal');
+    if (modal && (e.target === modal || !e || e.target.classList.contains('photo-modal-close'))) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePhotoModal(e); });
+
+// Initial render
+render();
+</script>
+</body>
+</html>
