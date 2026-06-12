@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# 虚拟环境
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 数据库
+*.db
+*.sqlite3
+
+# 上传文件
+uploads/videos/*
+uploads/pdfs/*
+uploads/covers/*
+uploads/photos/*
+uploads/homeworks/*
+uploads/showcases/*
+!uploads/videos/.gitkeep
+!uploads/pdfs/.gitkeep
+!uploads/covers/.gitkeep
+!uploads/photos/.gitkeep
+!uploads/homeworks/.gitkeep
+!uploads/showcases/.gitkeep
+
+# 系统文件
+.DS_Store
+Thumbs.db
+nul
+
+# 环境变量
+.env
+.env.local
+
+# 日志
+*.log

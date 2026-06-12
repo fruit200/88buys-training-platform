@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./training.db:/app/training.db
+    environment:
+      - SECRET_KEY=your-production-secret-key-change-this
+      - FLASK_ENV=production
+    restart: unless-stopped
+    command: gunicorn wsgi:app -b 0.0.0.0:5000 -w 4 --timeout 120

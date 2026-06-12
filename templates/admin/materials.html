@@ -1,0 +1,379 @@
+{% extends "admin/base.html" %}
+{% block title %}资料管理 - {{ period.title }}{% endblock %}
+{% block page_title %}资料管理{% endblock %}
+
+{% block admin_content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('admin_periods') }}">期数管理</a>
+    <span class="sep">/</span>
+    <span>{{ period.title }}</span>
+</div>
+
+<!-- 上传模式切换 -->
+<div class="upload-tabs">
+    <button class="upload-tab active" onclick="switchUploadMode('single')" id="tab-single">
+        <span class="tab-icon">&#128228;</span> 单个上传
+    </button>
+    <button class="upload-tab" onclick="switchUploadMode('batch')" id="tab-batch">
+        <span class="tab-icon">&#128230;</span> 批量上传
+    </button>
+</div>
+
+<!-- ====== 单个上传 ====== -->
+<div class="form-card" id="form-single">
+    <h3 class="card-title">&#128228; 上传新资料</h3>
+    <form method="POST" enctype="multipart/form-data"
+          action="{{ url_for('admin_material_upload', period_id=period.id) }}">
+
+        <div class="form-group">
+            <label for="title">资料标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title" placeholder="例如：供应链数字化概述与趋势分析" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">课程描述</label>
+            <textarea id="description" name="description" rows="2" placeholder="简要描述本课程主要内容和亮点..."></textarea>
+        </div>
+
+        <label style="font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:8px;display:block;">分类信息</label>
+        <div class="meta-fields">
+            <div class="form-group" style="flex:1.2;min-width:140px">
+                <label for="section">板块</label>
+                <select id="section" name="section" required>
+                    <option value="courseware">&#128218; 培训课件</option>
+                    <option value="photo">&#128247; 照片墙</option>
+                    <option value="homework">&#128221; 作业存档</option>
+                    <option value="team_showcase">&#127942; 小组风采</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex:0.8;min-width:100px">
+                <label for="day_number">第几天</label>
+                <input type="number" id="day_number" name="day_number" value="1" min="1" max="{{ period.total_days or 1 }}">
+            </div>
+            <div class="form-group" style="flex:0.8;min-width:100px">
+                <label for="material_type">类型</label>
+                <select id="material_type" name="material_type">
+                    <option value="video">&#127916; 视频</option>
+                    <option value="pdf">&#128196; PDF</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex:1;min-width:120px">
+                <label for="group_name">小组名</label>
+                <input type="text" id="group_name" name="group_name" placeholder="可选">
+            </div>
+            <div class="form-group" style="flex:0.5;min-width:80px">
+                <label for="sort_order">排序</label>
+                <input type="number" id="sort_order" name="sort_order" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>上传文件</label>
+            <input type="file" name="file" id="fileInput" accept="video/mp4,video/*,.pdf,image/*">
+            <small class="form-hint">支持 MP4 视频、PDF 文件或图片（照片墙/小组风采自动使用图片类型）</small>
+        </div>
+
+        <div class="form-group">
+            <label for="file_url">或使用外部URL（可选）</label>
+            <input type="url" id="file_url" name="file_url" placeholder="https://example.com/video.mp4">
+        </div>
+
+        <button type="submit" class="btn btn-primary">&#128228; 上传资料</button>
+    </form>
+</div>
+
+<!-- ====== 批量上传 ====== -->
+<div class="form-card" id="form-batch" style="display:none">
+    <h3 class="card-title">&#128230; 批量上传资料</h3>
+    <p class="card-desc">一次选择多个文件批量上传。照片墙和小组风采无需逐一填写描述，系统自动使用文件名作为标题。</p>
+
+    <form method="POST" enctype="multipart/form-data" id="batchForm"
+          action="{{ url_for('admin_material_batch_upload', period_id=period.id) }}">
+
+        <!-- 分类信息 -->
+        <label style="font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:8px;display:block;">分类信息</label>
+        <div class="meta-fields">
+            <div class="form-group" style="flex:1.2;min-width:140px">
+                <label for="b_section">板块 <span class="required">*</span></label>
+                <select id="b_section" name="section" onchange="onBatchSectionChange()" required>
+                    <option value="photo">&#128247; 照片墙（推荐批量）</option>
+                    <option value="courseware">&#128218; 培训课件</option>
+                    <option value="homework">&#128221; 作业存档</option>
+                    <option value="team_showcase">&#127942; 小组风采</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex:0.8;min-width:100px">
+                <label for="b_day_number">第几天</label>
+                <input type="number" id="b_day_number" name="day_number" value="1" min="1" max="{{ period.total_days or 1 }}">
+            </div>
+            <div class="form-group" style="flex:1;min-width:120px">
+                <label for="b_group_name">小组名</label>
+                <input type="text" id="b_group_name" name="group_name" placeholder="可选">
+            </div>
+            <div class="form-group" style="flex:0.5;min-width:80px">
+                <label for="b_sort_order">起始排序</label>
+                <input type="number" id="b_sort_order" name="sort_order" value="0" min="0">
+            </div>
+        </div>
+
+        <!-- 共享标题/描述（课件/作业显示） -->
+        <div id="batch-desc-fields">
+            <div class="form-group">
+                <label for="b_shared_title">共享标题（可选）</label>
+                <input type="text" id="b_shared_title" name="shared_title" placeholder="留空则自动使用文件名作为标题">
+                <small class="form-hint">多文件时自动追加序号，如 "课程笔记 (1)"、"课程笔记 (2)"</small>
+            </div>
+            <div class="form-group">
+                <label for="b_shared_desc">共享描述（可选）</label>
+                <textarea id="b_shared_desc" name="shared_description" rows="2" placeholder="所有文件共用的描述..."></textarea>
+            </div>
+        </div>
+
+        <!-- 拖拽上传区 -->
+        <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-content">
+                <span class="drop-icon">&#128230;</span>
+                <p class="drop-title">拖拽文件到这里</p>
+                <p class="drop-hint">或点击选择文件（可多选）</p>
+                <p class="drop-formats" id="dropFormats">支持 JPG、PNG、GIF、WebP 图片格式</p>
+            </div>
+            <input type="file" name="files" id="batchFileInput" multiple
+                   accept="image/*" style="display:none">
+        </div>
+
+        <!-- 已选文件预览 -->
+        <div class="batch-file-list" id="batchFileList" style="display:none">
+            <div class="batch-file-header">
+                <span class="batch-count" id="batchCount">已选择 0 个文件</span>
+                <button type="button" class="btn btn-sm btn-outline" onclick="clearBatchFiles()">清空</button>
+            </div>
+            <div class="batch-file-items" id="batchFileItems"></div>
+        </div>
+
+        <div class="form-actions" style="margin-top:20px">
+            <button type="submit" class="btn btn-primary" id="batchSubmitBtn" disabled>
+                &#128228; 开始批量上传
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- ====== 现有资料列表 ====== -->
+<div class="admin-table-wrap">
+    <div class="table-header">
+        <h3 class="card-title">&#128203; 已有资料（{{ materials|length }}）</h3>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>排序</th>
+                <th>天数</th>
+                <th>板块</th>
+                <th>类型</th>
+                <th>标题</th>
+                <th>来源</th>
+                <th>观看</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in materials %}
+            <tr>
+                <td><span class="sort-badge">{{ m.sort_order }}</span></td>
+                <td>第{{ m.day_number }}天</td>
+                <td>
+                    <span class="section-badge section-{{ m.section }}">
+                        {% if m.section == 'courseware' %}培训课件
+                        {% elif m.section == 'photo' %}照片墙
+                        {% elif m.section == 'homework' %}作业存档
+                        {% elif m.section == 'team_showcase' %}小组风采
+                        {% endif %}
+                    </span>
+                    {% if m.group_name %}
+                    <br><small class="text-muted">{{ m.group_name }}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="type-badge {% if m.material_type == 'video' %}type-video{% elif m.material_type == 'pdf' %}type-pdf{% else %}type-image{% endif %}">
+                        {% if m.material_type == 'video' %}&#127916; 视频
+                        {% elif m.material_type == 'pdf' %}&#128196; PDF
+                        {% else %}&#128247; 图片
+                        {% endif %}
+                    </span>
+                </td>
+                <td>
+                    <strong>{{ m.title }}</strong>
+                    {% if m.description %}
+                    <br><small class="text-muted">{{ m.description[:40] }}{% if m.description|length > 40 %}...{% endif %}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if m.file_path %}
+                    <span class="text-muted">本地上传</span>
+                    {% elif m.file_url %}
+                    <span class="text-success">外部链接</span>
+                    {% else %}
+                    <span class="text-danger">无文件</span>
+                    {% endif %}
+                </td>
+                <td>&#128065; {{ m.view_count or 0 }}</td>
+                <td class="actions-cell">
+                    <button class="btn btn-sm btn-outline" onclick="toggleEdit({{ m.id }})">&#9998;</button>
+                    <form method="POST" action="{{ url_for('admin_material_delete', material_id=m.id) }}"
+                          onsubmit="return confirm('确定删除？')" style="display:inline">
+                        <button type="submit" class="btn btn-sm btn-danger">&#128465;</button>
+                    </form>
+                </td>
+            </tr>
+            <!-- 编辑行 -->
+            <tr id="edit-{{ m.id }}" class="edit-row" style="display:none">
+                <td colspan="8">
+                    <form method="POST" action="{{ url_for('admin_material_edit', material_id=m.id) }}" class="inline-edit-form">
+                        <div class="form-row">
+                            <input type="text" name="title" value="{{ m.title }}" placeholder="标题" required class="edit-input">
+                            <input type="text" name="description" value="{{ m.description }}" placeholder="描述" class="edit-input">
+                        </div>
+                        <div class="form-row" style="margin-top:8px">
+                            <select name="section" class="edit-input" style="width:110px;flex:none">
+                                <option value="courseware" {% if m.section == 'courseware' %}selected{% endif %}>培训课件</option>
+                                <option value="photo" {% if m.section == 'photo' %}selected{% endif %}>照片墙</option>
+                                <option value="homework" {% if m.section == 'homework' %}selected{% endif %}>作业存档</option>
+                                <option value="team_showcase" {% if m.section == 'team_showcase' %}selected{% endif %}>小组风采</option>
+                            </select>
+                            <input type="number" name="day_number" value="{{ m.day_number }}" min="1" class="edit-input-sm" placeholder="天">
+                            <input type="number" name="sort_order" value="{{ m.sort_order }}" min="0" class="edit-input-sm" placeholder="排序">
+                            <input type="text" name="group_name" value="{{ m.group_name }}" placeholder="小组名" class="edit-input" style="width:80px;flex:none">
+                            <input type="url" name="file_url" value="{{ m.file_url }}" placeholder="外部URL" class="edit-input">
+                            <button type="submit" class="btn btn-sm btn-primary">保存</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="toggleEdit({{ m.id }})">取消</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" class="text-center text-muted">暂无资料，请在上方上传</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+// ====== 上传模式切换 ======
+function switchUploadMode(mode) {
+    document.getElementById('form-single').style.display = mode === 'single' ? '' : 'none';
+    document.getElementById('form-batch').style.display = mode === 'batch' ? '' : 'none';
+    document.getElementById('tab-single').classList.toggle('active', mode === 'single');
+    document.getElementById('tab-batch').classList.toggle('active', mode === 'batch');
+}
+
+// ====== 批量上传 - 板块切换 ======
+function onBatchSectionChange() {
+    const section = document.getElementById('b_section').value;
+    const descFields = document.getElementById('batch-desc-fields');
+    const dropFormats = document.getElementById('dropFormats');
+    const fileInput = document.getElementById('batchFileInput');
+
+    if (section === 'photo' || section === 'team_showcase') {
+        descFields.style.display = 'none';
+        dropFormats.textContent = '支持 JPG、PNG、GIF、WebP 图片格式';
+        fileInput.setAttribute('accept', 'image/*');
+    } else {
+        descFields.style.display = '';
+        dropFormats.textContent = '支持 MP4 视频、PDF 文件或图片';
+        fileInput.setAttribute('accept', 'video/mp4,video/*,.pdf,image/*');
+    }
+    clearBatchFiles();
+}
+
+// ====== 拖拽上传 ======
+const dropZone = document.getElementById('dropZone');
+const batchInput = document.getElementById('batchFileInput');
+
+dropZone.addEventListener('click', () => batchInput.click());
+
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drag-over');
+});
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length > 0) {
+        batchInput.files = e.dataTransfer.files;
+        updateBatchFileList(e.dataTransfer.files);
+    }
+});
+
+batchInput.addEventListener('change', function() {
+    updateBatchFileList(this.files);
+});
+
+function updateBatchFileList(files) {
+    const list = document.getElementById('batchFileList');
+    const items = document.getElementById('batchFileItems');
+    const count = document.getElementById('batchCount');
+    const submitBtn = document.getElementById('batchSubmitBtn');
+
+    if (!files || files.length === 0) {
+        list.style.display = 'none';
+        submitBtn.disabled = true;
+        return;
+    }
+
+    list.style.display = '';
+    submitBtn.disabled = false;
+    count.textContent = '\u5DF2\u9009\u62E9 ' + files.length + ' \u4E2A\u6587\u4EF6';
+
+    items.innerHTML = '';
+    const maxSize = 500 * 1024 * 1024;
+    for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        const sizeStr = f.size < 1024*1024
+            ? (f.size/1024).toFixed(1) + ' KB'
+            : (f.size/1024/1024).toFixed(1) + ' MB';
+
+        let icon = '\u{1F4C4}';
+        if (f.type.startsWith('image/')) icon = '\u{1F5BC}';
+        else if (f.type.startsWith('video/')) icon = '\u{1F3AC}';
+        else if (f.type === 'application/pdf') icon = '\u{1F4C4}';
+
+        const div = document.createElement('div');
+        div.className = 'batch-file-item';
+        div.innerHTML = '<span class="bf-icon">' + icon + '</span>' +
+            '<span class="bf-name">' + f.name + '</span>' +
+            '<span class="bf-size">' + sizeStr + '</span>';
+
+        // 图片预览缩略图
+        if (f.type.startsWith('image/') && f.size < 5*1024*1024) {
+            const thumb = document.createElement('img');
+            thumb.className = 'bf-thumb';
+            const reader = new FileReader();
+            reader.onload = function(e) { thumb.src = e.target.result; };
+            reader.readAsDataURL(f);
+            div.insertBefore(thumb, div.firstChild);
+        }
+        items.appendChild(div);
+    }
+}
+
+function clearBatchFiles() {
+    batchInput.value = '';
+    document.getElementById('batchFileList').style.display = 'none';
+    document.getElementById('batchSubmitBtn').disabled = true;
+}
+
+// ====== 行内编辑 ======
+function toggleEdit(id) {
+    const row = document.getElementById('edit-' + id);
+    row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+
+// 初始化板块
+onBatchSectionChange();
+</script>
+{% endblock %}

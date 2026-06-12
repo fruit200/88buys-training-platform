@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}首页 - 阿里系供应链直签服务商精英培训会{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- 欢迎横幅 -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1>欢迎回来，{{ current_user.name or current_user.phone }}</h1>
+            <p>探索培训课程，提升供应链专业能力</p>
+        </div>
+        <div style="position:relative;z-index:1;display:flex;gap:20px;margin-top:16px;">
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ period_data|length }}</span>
+                <span class="hero-stat-label">培训期数</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ period_data|sum(attribute='material_count') }}</span>
+                <span class="hero-stat-label">课件总数</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ period_data|sum(attribute='photo_count') }}</span>
+                <span class="hero-stat-label">活动照片</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 搜索和筛选 -->
+    <section class="filter-bar">
+        <form method="GET" action="{{ url_for('index') }}" class="search-form">
+            <div class="search-input-wrap">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" name="search" placeholder="搜索期数或课程名称..."
+                       value="{{ search }}" class="search-input">
+                {% if search %}
+                <a href="{{ url_for('index') }}" class="search-clear">&#10005;</a>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        </form>
+        <div class="filter-tags">
+            <a href="{{ url_for('index', search=search) }}"
+               class="filter-tag {% if not type_filter %}active{% endif %}">全部</a>
+            <a href="{{ url_for('index', search=search, type='video') }}"
+               class="filter-tag {% if type_filter == 'video' %}active{% endif %}">视频</a>
+            <a href="{{ url_for('index', search=search, type='pdf') }}"
+               class="filter-tag {% if type_filter == 'pdf' %}active{% endif %}">PDF</a>
+        </div>
+    </section>
+
+    <!-- 培训期数列表 -->
+    <section class="periods-grid">
+        {% for item in period_data %}
+        {% set p = item.period %}
+        <a href="{{ url_for('period_detail', period_id=p.id) }}" class="period-card">
+            <div class="period-cover">
+                {% if p.cover_image %}
+                <img src="{{ url_for('serve_cover', filename=p.cover_image) }}" alt="{{ p.title }}">
+                {% else %}
+                <div class="period-cover-placeholder">
+                    <span class="cover-icon">&#128214;</span>
+                    <span class="cover-label">第{{ p.sort_order or loop.index }}期</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="period-info">
+                <h3 class="period-title">{{ p.title }}</h3>
+                <p class="period-desc">{{ p.description[:80] }}{% if p.description|length > 80 %}...{% endif %}</p>
+                <div class="period-meta">
+                    <span class="meta-badge">&#128197; {{ p.total_days or 1 }}天</span>
+                    <span class="meta-badge">&#128193; {{ item.material_count }} 份课件</span>
+                    {% if item.photo_count > 0 %}
+                    <span class="meta-badge meta-blue">&#128247; {{ item.photo_count }}</span>
+                    {% endif %}
+                    {% if item.homework_count > 0 %}
+                    <span class="meta-badge meta-orange">&#128221; {{ item.homework_count }}</span>
+                    {% endif %}
+                    {% if item.showcase_count > 0 %}
+                    <span class="meta-badge meta-green">&#127942; {{ item.showcase_count }}</span>
+                    {% endif %}
+                    {% if type_filter and item.filtered_count != item.material_count %}
+                    <span class="meta-badge meta-filtered">筛选后 {{ item.filtered_count }} 份</span>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">&#128237;</div>
+            <p>暂无培训资料</p>
+            {% if search %}<p class="empty-hint">试试其他搜索词</p>{% endif %}
+        </div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

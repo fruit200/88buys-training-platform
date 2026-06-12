@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}管理后台{% endblock %} - 阿里系供应链直签服务商精英培训会</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- 侧边栏 -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="88buys" class="sidebar-logo-img">
+                <span class="sidebar-title">管理后台</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="sidebar-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                    <span class="sidebar-icon">&#128202;</span> 仪表盘
+                </a>
+                <a href="{{ url_for('admin_periods') }}"
+                   class="sidebar-link {% if 'period' in request.endpoint %}active{% endif %}">
+                    <span class="sidebar-icon">&#128218;</span> 期数管理
+                </a>
+                <a href="{{ url_for('admin_users') }}"
+                   class="sidebar-link {% if 'user' in request.endpoint %}active{% endif %}">
+                    <span class="sidebar-icon">&#128101;</span> 用户管理
+                </a>
+                <div class="sidebar-divider"></div>
+                <a href="{{ url_for('index') }}" class="sidebar-link">
+                    <span class="sidebar-icon">&#127968;</span> 前台首页
+                </a>
+                <a href="{{ url_for('logout') }}" class="sidebar-link">
+                    <span class="sidebar-icon">&#128682;</span> 退出登录
+                </a>
+            </nav>
+        </aside>
+
+        <!-- 主内容 -->
+        <div class="admin-main">
+            <header class="admin-header">
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="菜单">&#9776;</button>
+                <h1 class="admin-page-title">{% block page_title %}仪表盘{% endblock %}</h1>
+                <span class="admin-user">管理员: {{ current_user.name if current_user else 'admin' }}</span>
+            </header>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">
+                    <span>{{ message }}</span>
+                    <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="admin-content">
+                {% block admin_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('adminSidebar');
+        toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

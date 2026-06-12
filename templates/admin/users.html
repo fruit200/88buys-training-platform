@@ -1,0 +1,122 @@
+{% extends "admin/base.html" %}
+{% block title %}用户管理{% endblock %}
+{% block page_title %}用户管理{% endblock %}
+
+{% block admin_content %}
+<!-- 创建新用户 -->
+<div class="form-card">
+    <h3 class="card-title">&#128100; 创建新用户</h3>
+    <form method="POST" action="{{ url_for('admin_user_create') }}">
+        <div class="form-row">
+            <div class="form-group form-flex">
+                <label for="phone">手机号 <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="手机号（用于登录）" maxlength="11" required>
+            </div>
+            <div class="form-group form-flex">
+                <label for="name">姓名</label>
+                <input type="text" id="name" name="name" placeholder="真实姓名">
+            </div>
+            <div class="form-group form-sm">
+                <label for="password">密码 <span class="required">*</span></label>
+                <input type="text" id="password" name="password" placeholder="至少4位" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group form-flex">
+                <label for="company">公司</label>
+                <input type="text" id="company" name="company" placeholder="公司名称">
+            </div>
+            <div class="form-group form-flex">
+                <label for="position">职位</label>
+                <input type="text" id="position" name="position" placeholder="职位">
+            </div>
+            <div class="form-group form-flex">
+                <label for="group_name">小组</label>
+                <input type="text" id="group_name" name="group_name" placeholder="所属小组">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">创建用户</button>
+    </form>
+</div>
+
+<!-- 用户列表 -->
+<div class="admin-table-wrap">
+    <h3 class="card-title">&#128101; 用户列表（{{ users|length }}）</h3>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>手机号</th>
+                <th>公司</th>
+                <th>职位</th>
+                <th>小组</th>
+                <th>创建时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr class="{% if u.is_disabled %}row-disabled{% endif %}">
+                <td>{{ u.id }}</td>
+                <td><strong>{{ u.name or '-' }}</strong></td>
+                <td>{{ u.phone }}</td>
+                <td>{{ u.company or '-' }}</td>
+                <td>{{ u.position or '-' }}</td>
+                <td>{{ u.group_name or '-' }}</td>
+                <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    {% if u.is_disabled %}
+                    <span class="status-badge status-disabled">已禁用</span>
+                    {% else %}
+                    <span class="status-badge status-active">正常</span>
+                    {% endif %}
+                </td>
+                <td class="actions-cell">
+                    <form method="POST" action="{{ url_for('admin_user_toggle', user_id=u.id) }}" style="display:inline">
+                        {% if u.is_disabled %}
+                        <button type="submit" class="btn btn-sm btn-success">&#9989; 启用</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-sm btn-warning"
+                                onclick="return confirm('确定禁用用户 {{ u.name }}？')">&#128683; 禁用</button>
+                        {% endif %}
+                    </form>
+                    <!-- 重置密码 -->
+                    <button class="btn btn-sm btn-outline" onclick="toggleReset({{ u.id }})">&#128273;</button>
+                    <!-- 删除用户 -->
+                    <form method="POST" action="{{ url_for('admin_user_delete', user_id=u.id) }}"
+                          onsubmit="return confirm('确定删除用户 {{ u.name }}？此操作不可撤销。')" style="display:inline">
+                        <button type="submit" class="btn btn-sm btn-danger">&#128465;</button>
+                    </form>
+                </td>
+            </tr>
+            <!-- 重置密码行 -->
+            <tr id="reset-{{ u.id }}" class="edit-row" style="display:none">
+                <td colspan="9">
+                    <form method="POST" action="{{ url_for('admin_user_reset_password', user_id=u.id) }}" class="inline-edit-form">
+                        <div class="form-row" style="align-items:center">
+                            <span style="font-size:0.85rem;font-weight:600;">重置密码：</span>
+                            <input type="text" name="new_password" placeholder="输入新密码（至少4位）" class="edit-input" style="max-width:200px" required>
+                            <button type="submit" class="btn btn-sm btn-primary">确认重置</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="toggleReset({{ u.id }})">取消</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="9" class="text-center text-muted">暂无用户，请在上方创建</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleReset(id) {
+    const row = document.getElementById('reset-' + id);
+    row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+</script>
+{% endblock %}

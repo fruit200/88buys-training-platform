@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}个人中心 - 阿里系供应链直签服务商精英培训会{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('index') }}">首页</a>
+        <span class="sep">/</span>
+        <span>个人中心</span>
+    </div>
+
+    <div class="profile-layout">
+        <!-- 个人信息卡片 -->
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">
+                    <span>{{ user.name[0] if user.name else 'U' }}</span>
+                </div>
+                <div>
+                    <h2 class="profile-name">{{ user.name or '未设置' }}</h2>
+                    <p class="profile-phone">{{ user.phone }}</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('profile') }}" class="profile-form">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" name="name" value="{{ user.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">公司</label>
+                    <input type="text" id="company" name="company" value="{{ user.company }}">
+                </div>
+                <div class="form-group">
+                    <label for="position">职位</label>
+                    <input type="text" id="position" name="position" value="{{ user.position }}">
+                </div>
+                <button type="submit" class="btn btn-primary">保存修改</button>
+            </form>
+        </div>
+
+        <!-- 观看历史 -->
+        <div class="history-card">
+            <h3 class="card-title">&#128214; 观看历史</h3>
+            {% if views %}
+            <div class="history-list">
+                {% for v in views %}
+                <div class="history-item">
+                    <div class="history-info">
+                        <span class="history-icon">
+                            {% if v.material.material_type == 'video' %}&#127916;{% elif v.material.material_type == 'pdf' %}&#128196;{% else %}&#128247;{% endif %}
+                        </span>
+                        <div>
+                            <a href="{{ url_for('period_detail', period_id=v.material.period_id, day=v.material.day_number, section=v.material.section, mid=v.material.id) }}"
+                               class="history-title">{{ v.material.title }}</a>
+                            <span class="history-period">{{ v.material.period.title }}</span>
+                        </div>
+                    </div>
+                    <span class="history-time">{{ v.first_view_time.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state-sm">
+                <p>暂无观看记录</p>
+                <p class="empty-hint">浏览培训资料后将显示在这里</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

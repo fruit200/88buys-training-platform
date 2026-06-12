@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if period %}编辑期数{% else %}新建期数{% endif %}{% endblock %}
+{% block page_title %}{% if period %}编辑期数{% else %}新建期数{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="breadcrumb">
+    <a href="{{ url_for('admin_periods') }}">期数管理</a>
+    <span class="sep">/</span>
+    <span>{% if period %}编辑{% else %}新建{% endif %}</span>
+</div>
+
+<div class="form-card">
+    <form method="POST" enctype="multipart/form-data"
+          action="{% if period %}{{ url_for('admin_period_edit', period_id=period.id) }}{% else %}{{ url_for('admin_period_new') }}{% endif %}">
+
+        <div class="form-group">
+            <label for="title">标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title"
+                   value="{{ period.title if period else '' }}"
+                   placeholder="例如：第3期 - 冷链物流管理" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">简介</label>
+            <textarea id="description" name="description" rows="4"
+                      placeholder="本期培训内容概述...">{{ period.description if period else '' }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group form-flex">
+                <label for="total_days">培训天数 <span class="required">*</span></label>
+                <input type="number" id="total_days" name="total_days"
+                       value="{{ period.total_days if period else 2 }}" min="1" max="30">
+                <small class="form-hint">课程分几天进行（1-30天）</small>
+            </div>
+            <div class="form-group form-sm">
+                <label for="sort_order">排序号</label>
+                <input type="number" id="sort_order" name="sort_order"
+                       value="{{ period.sort_order if period else 0 }}" min="0">
+                <small class="form-hint">数字越小越靠前</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cover_image">封面图{% if period and period.cover_image %} (重新上传替换){% endif %}</label>
+            <input type="file" id="cover_image" name="cover_image" accept="image/*">
+            {% if period and period.cover_image %}
+            <div class="current-cover">
+                <img src="{{ url_for('serve_cover', filename=period.cover_image) }}" alt="当前封面">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{% if period %}保存修改{% else %}创建期数{% endif %}</button>
+            <a href="{{ url_for('admin_periods') }}" class="btn btn-outline">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

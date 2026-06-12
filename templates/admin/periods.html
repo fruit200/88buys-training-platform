@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block title %}期数管理{% endblock %}
+{% block page_title %}期数管理{% endblock %}
+
+{% block admin_content %}
+<div class="admin-toolbar">
+    <a href="{{ url_for('admin_period_new') }}" class="btn btn-primary">+ 新建期数</a>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>排序</th>
+                <th>封面</th>
+                <th>标题</th>
+                <th>天数</th>
+                <th>资料数</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in periods %}
+            <tr>
+                <td><span class="sort-badge">{{ p.sort_order }}</span></td>
+                <td>
+                    {% if p.cover_image %}
+                    <img src="{{ url_for('serve_cover', filename=p.cover_image) }}" class="thumb-img" alt="">
+                    {% else %}
+                    <div class="thumb-placeholder">&#128214;</div>
+                    {% endif %}
+                </td>
+                <td>
+                    <strong>{{ p.title }}</strong>
+                    {% if p.description %}
+                    <br><small class="text-muted">{{ p.description[:50] }}{% if p.description|length > 50 %}...{% endif %}</small>
+                    {% endif %}
+                </td>
+                <td>{{ p.total_days or 1 }} 天</td>
+                <td>{{ p.materials.count() }} 份</td>
+                <td>{{ p.created_at.strftime('%Y-%m-%d') }}</td>
+                <td class="actions-cell">
+                    <a href="{{ url_for('admin_materials', period_id=p.id) }}" class="btn btn-sm btn-accent">&#128193; 资料</a>
+                    <a href="{{ url_for('admin_period_edit', period_id=p.id) }}" class="btn btn-sm btn-outline">&#9998;</a>
+                    <form method="POST" action="{{ url_for('admin_period_delete', period_id=p.id) }}"
+                          onsubmit="return confirm('确定删除此期数及其所有资料？')" style="display:inline">
+                        <button type="submit" class="btn btn-sm btn-danger">&#128465;</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center text-muted">暂无期数，请点击上方新建</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

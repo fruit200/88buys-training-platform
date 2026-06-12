@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+{% block title %}{{ period.title }} - 阿里系供应链直签服务商精英培训会{% endblock %}
+
+{% block head %}
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+        <a href="{{ url_for('index') }}">首页</a>
+        <span class="sep">/</span>
+        <span>{{ period.title }}</span>
+    </div>
+
+    <!-- 天数导航 -->
+    {% if (period.total_days or 1) > 1 %}
+    <div class="day-nav">
+        <span class="day-nav-label">培训日程：</span>
+        {% for d in range(1, (period.total_days or 1) + 1) %}
+        <a href="{{ url_for('period_detail', period_id=period.id, day=d, section=current_section) }}"
+           class="day-btn {% if d == current_day %}active{% endif %}">
+            第{{ d }}天
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 板块切换 -->
+    <div class="section-tabs">
+        <a href="{{ url_for('period_detail', period_id=period.id, day=current_day, section='courseware') }}"
+           class="section-tab {% if current_section == 'courseware' %}active{% endif %}">
+            &#128218; 培训课件
+            {% if section_counts.get('courseware', 0) > 0 %}
+            <span class="tab-count">{{ section_counts['courseware'] }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('period_detail', period_id=period.id, day=current_day, section='photo') }}"
+           class="section-tab {% if current_section == 'photo' %}active{% endif %}">
+            &#128247; 照片墙
+            {% if section_counts.get('photo', 0) > 0 %}
+            <span class="tab-count">{{ section_counts['photo'] }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('period_detail', period_id=period.id, day=current_day, section='homework') }}"
+           class="section-tab {% if current_section == 'homework' %}active{% endif %}">
+            &#128221; 作业存档
+            {% if section_counts.get('homework', 0) > 0 %}
+            <span class="tab-count">{{ section_counts['homework'] }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('period_detail', period_id=period.id, day=current_day, section='team_showcase') }}"
+           class="section-tab {% if current_section == 'team_showcase' %}active{% endif %}">
+            &#127942; 小组风采
+            {% if section_counts.get('team_showcase', 0) > 0 %}
+            <span class="tab-count">{{ section_counts['team_showcase'] }}</span>
+            {% endif %}
+        </a>
+    </div>
+
+    {% if current_section == 'photo' and materials %}
+    <!-- 照片墙模式：网格展示 -->
+    <div class="photo-wall-panel">
+        <div class="photo-wall-header">
+            <h2 class="panel-title">{{ period.title }} - 第{{ current_day }}天 照片墙</h2>
+            <span class="photo-wall-count">&#128247; 共 {{ materials|length }} 张照片</span>
+        </div>
+        <div class="photo-grid">
+            {% for m in materials %}
+            <div class="photo-grid-item" onclick="openPhotoModal(this)" data-title="{{ m.title }}">
+                {% if m.file_path %}
+                <img src="{{ url_for('serve_photo', filename=m.file_path) }}" alt="{{ m.title }}" loading="lazy">
+                {% elif m.file_url %}
+                <img src="{{ m.file_url }}" alt="{{ m.title }}" loading="lazy">
+                {% else %}
+                <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-tertiary);font-size:2rem;">&#128247;</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 照片灯箱 -->
+    <div class="photo-modal" id="photoModal" onclick="closePhotoModal(event)">
+        <div class="photo-modal-content">
+            <button class="photo-modal-close" onclick="closePhotoModal(event)">&times;</button>
+            <img id="photoModalImg" src="" alt="">
+            <p class="photo-modal-title" id="photoModalTitle"></p>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="detail-layout">
+        <!-- 左侧：资料列表 -->
+        <aside class="material-list-panel">
+            <h2 class="panel-title">{{ period.title }} - 第{{ current_day }}天</h2>
+            <p class="panel-desc">
+                {% if current_section == 'courseware' %}培训课件与学习资料
+                {% elif current_section == 'photo' %}培训活动照片
+                {% elif current_section == 'homework' %}学员作业存档
+                {% elif current_section == 'team_showcase' %}小组展示与风采
+                {% endif %}
+            </p>
+            <div class="material-list">
+                {% for m in materials %}
+                <a href="{{ url_for('period_detail', period_id=period.id, day=current_day, section=current_section, mid=m.id) }}"
+                   class="material-item {% if active and active.id == m.id %}active{% endif %}"
+                   data-type="{{ m.material_type }}" data-id="{{ m.id }}">
+                    <span class="material-icon">
+                        {% if m.material_type == 'video' %}&#127916;
+                        {% elif m.material_type == 'pdf' %}&#128196;
+                        {% else %}&#128247;
+                        {% endif %}
+                    </span>
+                    <span class="material-info">
+                        <span class="material-name">{{ m.title }}</span>
+                        {% if m.description %}
+                        <span class="material-desc">{{ m.description }}</span>
+                        {% endif %}
+                        {% if m.group_name %}
+                        <span class="material-group-tag">{{ m.group_name }}</span>
+                        {% endif %}
+                    </span>
+                    {% if m.material_type in ('video', 'pdf') %}
+                    <span class="material-views" title="观看人数">&#128065; {{ m.view_count or 0 }}</span>
+                    {% endif %}
+                </a>
+                {% else %}
+                <div class="empty-state-sm">
+                    {% if current_section == 'photo' %}暂无照片
+                    {% elif current_section == 'homework' %}暂无作业
+                    {% elif current_section == 'team_showcase' %}暂无小组展示
+                    {% else %}暂无资料
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </aside>
+
+        <!-- 右侧：播放/预览区 -->
+        <section class="viewer-panel">
+            {% if active %}
+            <div class="viewer-header">
+                <h3 class="viewer-title">{{ active.title }}</h3>
+                <span class="viewer-badge {% if active.material_type == 'video' %}badge-video{% elif active.material_type == 'pdf' %}badge-pdf{% else %}badge-image{% endif %}">
+                    {% if active.material_type == 'video' %}&#127916; 视频
+                    {% elif active.material_type == 'pdf' %}&#128196; PDF
+                    {% else %}&#128247; 图片
+                    {% endif %}
+                </span>
+            </div>
+            {% if active.description %}
+            <p class="viewer-desc">{{ active.description }}</p>
+            {% endif %}
+            {% if active.group_name %}
+            <p style="margin-bottom:12px;font-size:0.85rem;">
+                <span class="material-group-tag">{{ active.group_name }}</span>
+            </p>
+            {% endif %}
+
+            {% if active.material_type == 'video' %}
+            <!-- 视频播放器 -->
+            <div class="video-wrapper">
+                <video id="videoPlayer" controls preload="metadata" playsinline>
+                    {% if active.file_path %}
+                    <source src="{{ url_for('serve_video', filename=active.file_path) }}" type="video/mp4">
+                    {% elif active.file_url %}
+                    <source src="{{ active.file_url }}" type="video/mp4">
+                    {% endif %}
+                    您的浏览器不支持 HTML5 视频播放
+                </video>
+            </div>
+            <div class="video-controls">
+                <div class="speed-control">
+                    <label>播放速度：</label>
+                    <select id="playbackSpeed" class="speed-select">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+                <div class="progress-info" id="progressInfo">
+                    {% if progress > 0 %}
+                    <span>&#128205; 从 {{ "%.0f"|format(progress) }} 秒处继续播放</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% elif active.material_type == 'pdf' %}
+            <!-- PDF 预览器 -->
+            <div class="pdf-wrapper">
+                <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+                <div class="pdf-controls">
+                    <button id="pdfPrev" class="btn btn-sm btn-outline" disabled>&#9664; 上一页</button>
+                    <span id="pdfPageInfo" class="pdf-page-info">第 1 页</span>
+                    <button id="pdfNext" class="btn btn-sm btn-outline">下一页 &#9654;</button>
+                </div>
+                <div id="pdfLoading" class="pdf-loading">
+                    <div class="spinner"></div>
+                    <p>正在加载 PDF...</p>
+                </div>
+            </div>
+
+            {% elif active.material_type == 'image' %}
+            <!-- 图片查看器 -->
+            <div class="image-viewer">
+                {% if active.file_path %}
+                    {% if active.section == 'photo' %}
+                    <img src="{{ url_for('serve_photo', filename=active.file_path) }}" alt="{{ active.title }}">
+                    {% elif active.section == 'team_showcase' %}
+                    <img src="{{ url_for('serve_showcase', filename=active.file_path) }}" alt="{{ active.title }}">
+                    {% else %}
+                    <img src="{{ url_for('serve_photo', filename=active.file_path) }}" alt="{{ active.title }}">
+                    {% endif %}
+                {% elif active.file_url %}
+                <img src="{{ active.file_url }}" alt="{{ active.title }}">
+                {% else %}
+                <div class="image-placeholder">
+                    <span style="font-size:3rem;">&#128247;</span>
+                    <p>图片暂未上传</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div class="empty-viewer">
+                <div class="empty-icon">&#9654;&#65039;</div>
+                <p>请从左侧选择资料查看</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+    {% endif %}
+</div>
+
+{% block scripts %}
+<script>
+(function() {
+    const MATERIAL_ID = {{ active.id if active else 0 }};
+    const MATERIAL_TYPE = '{{ active.material_type if active else "" }}';
+
+    // 视频播放器逻辑
+    if (MATERIAL_TYPE === 'video') {
+        const video = document.getElementById('videoPlayer');
+        const speedSelect = document.getElementById('playbackSpeed');
+        const progressInfo = document.getElementById('progressInfo');
+        const INITIAL_PROGRESS = {{ progress }};
+        let viewRecorded = false;
+        let saveTimer = null;
+
+        if (INITIAL_PROGRESS > 0) {
+            video.addEventListener('loadedmetadata', function() {
+                video.currentTime = INITIAL_PROGRESS;
+            });
+        }
+
+        speedSelect.addEventListener('change', function() {
+            video.playbackRate = parseFloat(this.value);
+        });
+
+        function saveProgress() {
+            if (!video.currentTime || video.paused) return;
+            fetch('/api/progress/save', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    material_id: MATERIAL_ID,
+                    progress: video.currentTime
+                })
+            }).catch(() => {});
+        }
+
+        video.addEventListener('play', function() {
+            saveTimer = setInterval(saveProgress, 5000);
+        });
+
+        video.addEventListener('pause', function() {
+            clearInterval(saveTimer);
+            saveProgress();
+        });
+
+        window.addEventListener('beforeunload', saveProgress);
+
+        video.addEventListener('timeupdate', function() {
+            if (!viewRecorded && video.currentTime > 30) {
+                viewRecorded = true;
+                fetch('/api/material/' + MATERIAL_ID + '/view', {method: 'POST'})
+                    .then(r => r.json())
+                    .then(data => {
+                        const badge = document.querySelector('.material-item.active .material-views');
+                        if (badge && data.view_count !== undefined) {
+                            badge.textContent = '\u{1F441}\uFE0F ' + data.view_count;
+                        }
+                    })
+                    .catch(() => {});
+            }
+        });
+    }
+
+    // PDF 预览逻辑
+    if (MATERIAL_TYPE === 'pdf' && typeof pdfjsLib !== 'undefined') {
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        const loadingEl = document.getElementById('pdfLoading');
+        const prevBtn = document.getElementById('pdfPrev');
+        const nextBtn = document.getElementById('pdfNext');
+        const pageInfo = document.getElementById('pdfPageInfo');
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+
+        const PDF_URL = '{% if active.file_path %}{{ url_for("serve_pdf", filename=active.file_path) }}{% elif active.file_url %}{{ active.file_url }}{% endif %}';
+
+        function renderPage(num) {
+            pdfDoc.getPage(num).then(function(page) {
+                const container = canvas.parentElement;
+                const scale = Math.min(container.clientWidth / 612, 2);
+                const viewport = page.getViewport({scale: scale});
+
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+
+                pageInfo.textContent = '\u7B2C ' + num + ' / ' + totalPages + ' \u9875';
+                prevBtn.disabled = num <= 1;
+                nextBtn.disabled = num >= totalPages;
+            });
+        }
+
+        prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        });
+
+        nextBtn.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        });
+
+        pdfjsLib.getDocument(PDF_URL).promise.then(function(pdf) {
+            pdfDoc = pdf;
+            totalPages = pdf.numPages;
+            loadingEl.style.display = 'none';
+            renderPage(1);
+
+            fetch('/api/material/' + MATERIAL_ID + '/view', {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    const badge = document.querySelector('.material-item.active .material-views');
+                    if (badge && data.view_count !== undefined) {
+                        badge.textContent = '\u{1F441}\uFE0F ' + data.view_count;
+                    }
+                })
+                .catch(() => {});
+        }).catch(function(err) {
+            loadingEl.innerHTML = '<p>PDF 加载失败，请刷新重试</p>';
+            console.error('PDF load error:', err);
+        });
+    }
+})();
+
+// 照片灯箱
+function openPhotoModal(el) {
+    const img = el.querySelector('img');
+    if (!img) return;
+    const modal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('photoModalImg');
+    const modalTitle = document.getElementById('photoModalTitle');
+    if (modal && modalImg) {
+        modalImg.src = img.src;
+        modalTitle.textContent = el.getAttribute('data-title') || '';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+function closePhotoModal(e) {
+    if (e) e.stopPropagation();
+    const modal = document.getElementById('photoModal');
+    if (modal && (e.target === modal || !e || e.target.classList.contains('photo-modal-close'))) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePhotoModal(e);
+});
+</script>
+{% endblock %}
+{% endblock %}
